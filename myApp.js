@@ -17,7 +17,7 @@ var app = express();              // Do Not Edit
 // Install the package, then require it.
 var helmet = require("helmet");
 
-
+var bcrypt = require("bcrypt");
 
 /** 2) Hide potentially dangerous information - `helmet.hidePoweredBy()` */
 
@@ -175,6 +175,7 @@ app.use(helmet.noCache());
 // in the `"'self'"` keyword, the single quotes are part of the keyword itself, 
 // so it needs to be enclosed in **double quotes** to be working.
 
+app.use(helmet.contentSecurityPolicy({directives: {defaultSrc: ["'self'"], scriptSrc: ["'self'", "trusted-cdn.com"]}}));
 
 /** TIP: */ 
 
@@ -184,23 +185,22 @@ app.use(helmet.noCache());
 // set any other middleware individually, using a configuration object.
 
 // // - Example - 
-app.use(helmet({
-   frameguard: {              // configure
-     action: 'deny'
-   },
-   contentSecurityPolicy: {   // enable and configure
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "trusted-cdn.com"],
-    }
-   },
-  dnsPrefetchControl: false   // disable
- }));
+// app.use(helmet({
+//   frameguard: {              // configure
+//     action: 'deny'
+//   },
+//   contentSecurityPolicy: {   // enable and configure
+//    directives: {
+//      defaultSrc: ["'self'"],
+//      styleSrc: ['style.com'],
+//    }
+//   },
+//  dnsPrefetchControl: false   // disable
+// }))
 
 // We introduced each middleware separately, for teaching purpose, and for
 // ease of testing. Using the 'parent' `helmet()` middleware is easiest, and
 // cleaner, for a real project.
-
 
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
